@@ -1,1 +1,1 @@
-private_token = "NzE0NTM2MzEyNDU1MDM3MDE4.XswHVg.eEWc7rMrunAA8HKWVcDL-IlqSM8"
+private_token = "ur_api_ket"

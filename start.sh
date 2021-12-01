@@ -1,4 +1,4 @@
-while [ "$(fping google.com | grep alive)" == "" ]
+while [ -z "$(fping google.com | grep alive)" ]
 do
     echo "waiting for internet ..."
     sleep 3

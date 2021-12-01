@@ -3,6 +3,7 @@ cd $script_full_path
 git checkout .
 git fetch https://github.com/thomaspara/thomas-discord-bot.git
 git pull
+chmod +x ./start.sh
 isRunning=$(screen -ls | grep discord_bot)
 if [ -z "$isRunning" ]
 then

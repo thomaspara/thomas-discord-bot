@@ -5,5 +5,5 @@ git pull
 isRunning=$(screen -ls | grep discord_bot)
 if [ -z "$isRunning" ]
 then
-	screen -mdS discord_bot start.sh
+	screen -mdS discord_bot ./start.sh
 fi

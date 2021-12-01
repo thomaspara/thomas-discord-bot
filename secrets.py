@@ -1,1 +1,0 @@
-private_token = "ur_api_ket"

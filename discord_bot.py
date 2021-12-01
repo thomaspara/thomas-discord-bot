@@ -10,8 +10,8 @@ client = discord.Client()
 summon="/cock"
 srv_num = 0 #todo implement this
 
-mc_v_server = server_manager("mcv", "your_mc_path_script")
-ter_v_server = server_manager("terv", "your_ter_path_script")
+mc_v_server = server_manager("mcv", secrets.vanilla_mc_path)
+ter_v_server = server_manager("terv", secrets.vanilla_ter_path)
 
 help_msg = f'''to use me say `{summon}` 
 Commands:
@@ -24,9 +24,9 @@ Commands:
 `ip` shows ip list
 `help` shows this message'''
 
-ips = '''server list
-`1.1.1.1:1111` minecraft
-`1.1.1.1:1111` terraria
+ips = f'''server list
+`{secrets.vanilla_mc_ip}` minecraft
+`{secrets.vanilla_ter_ip}` terraria
 Ask Thomas for help if you can't connect
 '''
 
@@ -74,6 +74,9 @@ async def on_message(message):
             rsp = f"sent `{cmd}`"
         else:
             rsp = "server is offline"
+    #other stuff
+    elif msg == f'{summon} ip':
+        rsp = ips
     else:
         rsp = "unknown command"
 

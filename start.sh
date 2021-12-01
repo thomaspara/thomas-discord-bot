@@ -5,4 +5,3 @@ do
 done
 echo "Internet is now online"
 python3 discord_bot.py
-sleep 20m

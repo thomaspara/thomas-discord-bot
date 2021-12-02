@@ -16,7 +16,7 @@ mc_v_server = server_manager("mcv", secrets.vanilla_mc_path)
 ter_v_server = server_manager("terv", secrets.vanilla_ter_path)
 
 help_msg = f'''to use me say `{summon}` 
-I will ignore you if you have the Bot Banned role
+I will ignore you outside of {secrets.bot_channel} or if you have the Bot Banned role
 Commands:
 `minecraft start` starts minecraft server
 `minecraft stop` stops minecraft server

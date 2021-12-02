@@ -15,7 +15,7 @@ power = power_manager()
 mc_v_server = server_manager("mcv", secrets.vanilla_mc_path)
 ter_v_server = server_manager("terv", secrets.vanilla_ter_path)
 
-help_msg = f'''to use me say `{summon}` 
+help_msg = f'''to use me say `{summon.strip()}` 
 I will ignore you outside of {secrets.bot_channel} or if you have the Bot Banned role
 Commands:
 `minecraft start` starts minecraft server
@@ -42,7 +42,7 @@ Ask Thomas for help if you can't connect
 async def on_message(message):
     if message.channel.name != secrets.bot_channel : return
     if message.author == client.user: return
-    if not message.content.startswith(summon) : return 
+    if not message.content.startswith(summon.strip()) : return 
     roles = [r.name for r in message.author.roles]
     if "Bot Banned" in roles: return
     msg = message.content

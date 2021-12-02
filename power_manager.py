@@ -25,4 +25,4 @@ class power_manager:
     #     return f"shutdown in {timer} min"
 
     def reboot(self):
-        os.system("shutdown -r +1")
+        os.system("sudo shutdown -r +1")

@@ -67,7 +67,7 @@ async def on_message(message):
         else:
             rsp = "server is offline"
     elif f'{summon}minecraft send ' in msg and "Minecraft Admin" in roles:
-        cmd = remove_prefix(msg,f'{summon} minecraft send ')
+        cmd = remove_prefix(msg,f'{summon}minecraft send ')
         if mc_v_server.send(cmd):
             rsp = f"sent `{cmd}`"
         else:
@@ -89,7 +89,7 @@ async def on_message(message):
         else:
             rsp = "server is offline"
     elif f'{summon}terraria send ' in msg and "Terraria Admin" in roles:
-        cmd = remove_prefix(msg,f'{summon} terraria send ')
+        cmd = remove_prefix(msg,f'{summon}terraria send ')
         if ter_v_server.send(cmd):
             rsp = f"sent `{cmd}`"
         else:

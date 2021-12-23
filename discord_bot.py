@@ -14,6 +14,7 @@ srv_num = 0 #todo implement this
 power = power_manager()
 mc_v_server = server_manager("mcv", secrets.vanilla_mc_path)
 ter_v_server = server_manager("terv", secrets.vanilla_ter_path)
+rlc_server = server_manager("rlc", secrets.rlc_path)
 
 help_msg = f'''to use me say `{summon.strip()}` 
 I will ignore you outside of {secrets.bot_channel} or if you have the Bot Banned role
@@ -25,8 +26,13 @@ Commands:
 
 `terraria start` starts terraria server
 `terraria stop` stops terraria server
-`terraria send <server command>` sends <server command> to server, requires Minecraft Admin role
+`terraria send <server command>` sends <server command> to server, requires Terraria Admin role
 `terraria live` says if the server is live
+
+`rlcraft start` starts rlcraft server
+`rlcraft stop` stops rlcraft server
+`rlcraft send <server command>` sends <server command> to server, requires RLCraft Admin role
+`rlcraft live` says if the server is live
 
 `live` shows status of all servers
 `ip` shows ip list
@@ -35,12 +41,13 @@ Commands:
 ips = f'''server list
 `{secrets.vanilla_mc_ip}` minecraft
 `{secrets.vanilla_ter_ip}` terraria
+`{secrets.rlc_ip}` rlcraft
 Ask Thomas for help if you can't connect
 '''
 
 @client.event
 async def on_message(message):
-    if message.channel.name != secrets.bot_channel : return
+    if message.channel.name not in secrets.bot_channel : return
     if message.author == client.user: return
     if not message.content.startswith(summon.strip()) : return 
     roles = [r.name for r in message.author.roles]
@@ -94,6 +101,28 @@ async def on_message(message):
             rsp = f"sent `{cmd}`"
         else:
             rsp = "server is offline"
+    #rlcraft
+    elif msg == f'{summon}rlcraft start':
+        if rlc_server.start():
+            rsp = f"starting server, be sure to run `{summon}rlcraft stop` when you are done"
+        else:
+            rsp = "server is running"
+    elif msg == f'{summon}rlcraft stop':
+        if rlc_server.send('stop'):
+            rsp = "stopping rlcraft"
+        else:
+            rsp = "server already offline"
+    elif msg == f'{summon}rlcraft live':
+        if rlc_server.is_running():
+            rsp = "server is running"
+        else:
+            rsp = "server is offline"
+    elif f'{summon}rlcraft send ' in msg and "RLCraft Admin" in roles:
+        cmd = remove_prefix(msg,f'{summon}rlcraft send ')
+        if rlc_server.send(cmd):
+            rsp = f"sent `{cmd}`"
+        else:
+            rsp = "server is offline"
     #power management
     elif msg == f'{summon}reboot' and "Super Admin" in roles:
         power.reboot()
@@ -107,6 +136,9 @@ async def on_message(message):
         if mc_v_server.is_running():
             mc_v_server.send("stop")
             rsp += "stopping minecraft\n"
+        if rlc_server.is_running():
+            rlc_server.send("stop")
+            rsp += "stopping rlcraft\n"
         if rsp == "":
             rsp = "nothing is running"
     #other stuff
@@ -118,6 +150,8 @@ async def on_message(message):
             rsp += "terraria is running\n"
         if mc_v_server.is_running():
             rsp += "minecraft is running\n"
+        if rlc_server.is_running():
+            rsp += "rlcraft is running\n"
         if rsp == "":
             rsp = "nothing is running"
     else:

@@ -77,7 +77,7 @@ def stop_all():
 def scheduled_jobs():
     schedule.every().day.at("06:00").do(send_message, channels=bot_channels, msg="server rebooting, stopping all running servers")
     schedule.every().day.at("06:01").do(stop_all)
-    schedule.every().day.at("06:06").do(power.reboot())
+    schedule.every().day.at("06:06").do(power.reboot)
 
     print(schedule.jobs)
 

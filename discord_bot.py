@@ -8,7 +8,7 @@ def remove_prefix(text, prefix):
     return text[text.startswith(prefix) and len(prefix):]
 
 client = discord.Client()
-summon="/cock "
+summon="%cock "
 srv_num = 0 #todo implement this
 
 power = power_manager()

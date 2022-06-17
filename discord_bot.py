@@ -127,6 +127,9 @@ async def on_message(message):
     elif msg == f'{summon}reboot' and "Super Admin" in roles:
         power.reboot()
         rsp = "server rebooting"
+    elif msg == f'{summon}shutdown' and "Super Admin" in roles:
+        power.quick_shutdown()
+        rsp = "server shutting down"      
     #Super Admin tools
     elif msg == f'{summon}stop all' and "Super Admin" in roles:
         rsp = ""

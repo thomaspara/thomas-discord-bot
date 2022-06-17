@@ -26,3 +26,6 @@ class power_manager:
 
     def reboot(self):
         os.system("sudo shutdown -r +1")
+
+    def quick_shutdown(self):
+        os.system("sudo shutdown")

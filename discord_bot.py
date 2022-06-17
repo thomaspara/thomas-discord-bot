@@ -2,6 +2,12 @@ import discord
 import secrets
 from process_manager import server_manager 
 from power_manager import power_manager
+from discord.ext import commands, tasks
+import time
+import schedule
+import threading
+import asyncio
+
 print("bot started")
 
 def remove_prefix(text, prefix):
@@ -10,6 +16,7 @@ def remove_prefix(text, prefix):
 client = discord.Client()
 summon="%cock "
 srv_num = 0 #todo implement this
+bot_channels = []
 
 power = power_manager()
 mc_v_server = server_manager("mcv", secrets.vanilla_mc_path)
@@ -44,6 +51,50 @@ ips = f'''server list
 `{secrets.rlc_ip}` rlcraft
 Ask Thomas for help if you can't connect
 '''
+
+async def send_message_helper(channel, msg):
+    await channel.send(msg)
+
+def send_message(channels, msg):
+    for channel in channels:
+        client.loop.create_task(send_message_helper(channel, msg))
+
+def stop_all():
+        rsp = ""
+        if ter_v_server.is_running():
+            ter_v_server.send("exit")
+            rsp += "stopping terraria\n"
+        if mc_v_server.is_running():
+            mc_v_server.send("stop")
+            rsp += "stopping minecraft\n"
+        if rlc_server.is_running():
+            rlc_server.send("stop")
+            rsp += "stopping rlcraft\n"
+        if rsp == "":
+            rsp = "nothing is running"
+        return rsp
+
+def scheduled_jobs():
+    schedule.every().day.at("06:00").do(send_message, channels=bot_channels, msg="server rebooting, stopping all running servers")
+    schedule.every().day.at("06:01").do(stop_all)
+    schedule.every().day.at("06:06").do(power.reboot())
+
+    print(schedule.jobs)
+
+@tasks.loop(seconds=1)
+async def run_scheduled_tasks():
+    schedule.run_pending()
+
+@client.event
+async def on_ready():
+    print("bot ready")
+    for guild in client.guilds:
+        for channel in guild.channels:
+            if channel.name in secrets.bot_channel:
+                bot_channels.append(channel)
+    print(bot_channels)
+    scheduled_jobs()
+    run_scheduled_tasks.start()
 
 @client.event
 async def on_message(message):
@@ -132,18 +183,7 @@ async def on_message(message):
         rsp = "server shutting down"      
     #Super Admin tools
     elif msg == f'{summon}stop all' and "Super Admin" in roles:
-        rsp = ""
-        if ter_v_server.is_running():
-            ter_v_server.send("exit")
-            rsp += "stopping terraria\n"
-        if mc_v_server.is_running():
-            mc_v_server.send("stop")
-            rsp += "stopping minecraft\n"
-        if rlc_server.is_running():
-            rlc_server.send("stop")
-            rsp += "stopping rlcraft\n"
-        if rsp == "":
-            rsp = "nothing is running"
+        rsp = stop_all()
     #other stuff
     elif msg == f'{summon}ip':
         rsp = ips

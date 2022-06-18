@@ -7,13 +7,16 @@ import time
 import schedule
 import threading
 import asyncio
-
+intents = discord.Intents.default()
+intents.presences = True
+intents.members = True
+print(intents)
 print("bot started")
 
 def remove_prefix(text, prefix):
     return text[text.startswith(prefix) and len(prefix):]
 
-client = discord.Client()
+client = discord.Client(intents=intents)
 summon="%cock "
 srv_num = 0 #todo implement this
 bot_channels = []
@@ -201,5 +204,11 @@ async def on_message(message):
         rsp = "unknown command"
 
     await message.channel.send(rsp)
+
+@client.event
+async def on_member_update(prev, cur):
+    if cur.activity:
+        if cur.activity.name == "League of Legends":
+            send_message(bot_channels, f"{cur.mention} is playing {cur.activity.name}. Everyone be aware of this and judge them accordingly.")
 
 client.run(secrets.private_token)

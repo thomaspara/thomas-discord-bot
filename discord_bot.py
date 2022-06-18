@@ -101,6 +101,8 @@ async def on_ready():
     scheduled_jobs()
     run_scheduled_tasks.start()
     send_message(bot_channels, "bot online")
+    judge_msg = ''
+
 
 @client.event
 async def on_message(message):

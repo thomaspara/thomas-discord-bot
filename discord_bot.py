@@ -100,6 +100,7 @@ async def on_ready():
     print(bot_channels)
     scheduled_jobs()
     run_scheduled_tasks.start()
+    send_message(bot_channels, "bot online")
 
 @client.event
 async def on_message(message):

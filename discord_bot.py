@@ -208,11 +208,12 @@ async def on_message(message):
 judge_msg = ''
 @client.event
 async def on_member_update(prev, cur):
-    if cur.activity:
-        if cur.activity.name == "League of Legends":
-            new_msg = f"{cur.mention} is playing {cur.activity.name}. Everyone be aware of this and judge them accordingly."
+    if cur.activities:
+        activity_names = [a.name for a in cur.activities]
+        if "League of Legends" in activity_names:
+            new_msg = f"{cur.mention} is playing League of Legends. Everyone be aware of this and judge them accordingly."
             if new_msg != judge_msg:
                 judge_msg = new_msg
-                send_message(bot_channels, judge_msg)
+                send_message(bot_channels, new_msg)
 
 client.run(secrets.private_token)

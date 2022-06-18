@@ -55,6 +55,8 @@ ips = f'''server list
 Ask Thomas for help if you can't connect
 '''
 
+judge_msg = ''
+
 async def send_message_helper(channel, msg):
     await channel.send(msg)
 
@@ -205,7 +207,6 @@ async def on_message(message):
 
     await message.channel.send(rsp)
 
-judge_msg = ''
 @client.event
 async def on_member_update(prev, cur):
     if cur.activities:

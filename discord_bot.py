@@ -55,8 +55,6 @@ ips = f'''server list
 Ask Thomas for help if you can't connect
 '''
 
-judge_msg = ''
-
 async def send_message_helper(channel, msg):
     await channel.send(msg)
 
@@ -213,11 +211,10 @@ async def on_message(message):
 @client.event
 async def on_member_update(prev, cur):
     if cur.activities:
-        activity_names = [a.name for a in cur.activities]
-        if "League of Legends" in activity_names:
-            new_msg = f"{cur.mention} is playing League of Legends. Everyone be aware of this and judge them accordingly."
-            if new_msg != judge_msg:
-                judge_msg = new_msg
-                send_message(bot_channels, new_msg)
+        curr_activity_names = [a.name for a in cur.activities]
+        prev_activity_names = [a.name for a in prev.activities]
+        if "League of Legends" in curr_activity_names and "League of Legends" not in prev_activity_names:
+            judge_msg = f"{cur.mention} is playing League of Legends. Everyone be aware of this and judge them accordingly."
+            send_message(bot_channels, judge_msg)
 
 client.run(secrets.private_token)

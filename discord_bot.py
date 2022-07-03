@@ -210,6 +210,7 @@ async def on_message(message):
 
 @client.event
 async def on_member_update(prev, cur):
+    pass
     if cur.activities:
         curr_activity_names = [a.name for a in cur.activities]
         prev_activity_names = [a.name for a in prev.activities]

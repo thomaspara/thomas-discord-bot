@@ -116,7 +116,7 @@ async def on_message(message):
     msg = message.content
     msg = msg.lower().strip()
     rsp = ''
-
+    print(summon)
     if summon.strip() == msg or f'{summon}help' == msg:
         rsp = help_msg
     # make msg hangler

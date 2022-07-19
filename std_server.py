@@ -23,7 +23,7 @@ class std_manager:
             else:
                 rsp = "server is running"
         elif msg == f'{summon}{self.name} stop':
-            if self.server.send(self.stop):
+            if self.server.send(self.stop_word):
                 rsp = f"stopping {self.name}"
             else:
                 rsp = "server already offline"

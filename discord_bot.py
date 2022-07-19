@@ -41,8 +41,7 @@ for server in server_list:
 help_msg = f'''to use me say `{summon.strip()}` 
 I will ignore you outside of {secrets.bot_channel} or if you have the Bot Banned role
 Commands:
-{server_instr}
-`live` shows status of all servers
+{server_instr}`live` shows status of all servers
 `ip` shows ip list
 `help` shows this message'''
 

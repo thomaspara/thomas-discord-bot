@@ -15,7 +15,7 @@ class std_manager:
         self.ip = f'`{ip}` {name}'
         self.stop_word = stop_word
 
-    def std_commands(self, msg, summon):
+    def std_commands(self, msg, summon, roles):
         rsp = ""
         if msg == f'{summon}{self.name} start':
             if self.server.start():

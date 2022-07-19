@@ -30,4 +30,11 @@ class server_manager:
 if __name__ == "__main__": 
     server = server_manager("vanilla", "/home/thomas/Games/mc_v_server/vanilla_start.sh")
     server.start()
+    time.sleep(20)
     server.send("say poop")
+    time.sleep(1)
+    server.send("--beg--")
+    time.sleep(1)
+    server.send("list")
+    time.sleep(1)
+    server.send("--end--")

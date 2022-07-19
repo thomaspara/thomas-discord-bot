@@ -27,9 +27,9 @@ bot_channels = []
 power = power_manager()
 # make servers
 server_list = [
-    std_manager("minecraft", "mcv", secrets.vanilla_mc_path, "stop"),
-    std_manager("terraria", "terv", secrets.vanilla_ter_path, "exit"),
-    std_manager("rlcraft", "rlc", secrets.rlc_path, "stop")
+    std_manager("minecraft", "mcv", secrets.vanilla_mc_path,secrets.vanilla_mc_ip, "stop"),
+    std_manager("terraria", "terv", secrets.vanilla_ter_path,secrets.vanilla_ter_ip, "exit"),
+    std_manager("rlcraft", "rlc", secrets.rlc_path,secrets.rlc_ip, "stop")
 ]
 
 # make help message

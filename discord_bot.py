@@ -30,7 +30,7 @@ server_list = [
     std_manager("minecraft", "mcv", secrets.vanilla_mc_path,secrets.vanilla_mc_ip, "stop"),
     std_manager("terraria", "terv", secrets.vanilla_ter_path,secrets.vanilla_ter_ip, "exit"),
     std_manager("rlcraft", "rlc", secrets.rlc_path,secrets.rlc_ip, "stop"),
-    std_manager("valhiem", "valh", secrets.valhiem_path,secrets.valhiem_ip, "^C"),
+    std_manager("valheim", "valh", secrets.valhiem_path,secrets.valhiem_ip, "^C"),
 ]
 
 # make help message

@@ -5,7 +5,7 @@ from subprocess import run, PIPE
 
 class server_manager:
 
-    def __init__(self,screen_name,cmd):
+    def __init__(self,screen_name,cmd, roles):
         self.screen_name = screen_name
         self.cmd = cmd
     

@@ -142,7 +142,7 @@ async def on_message(message):
     
     # make msg hangler 
     for server in server_list:
-        server_rsp = server.std_commands(msg, summon)
+        server_rsp = server.std_commands(msg, summon, roles)
         if server_rsp:
             rsp = server_rsp
 

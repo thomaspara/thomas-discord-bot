@@ -116,16 +116,11 @@ async def on_message(message):
     msg = message.content
     msg = msg.lower().strip()
     rsp = ''
-    print(summon)
+
     if summon.strip() == msg or f'{summon}help' == msg:
         rsp = help_msg
-    # make msg hangler
-    for server in server_list:
-        server_rsp = server.std_commands(msg, summon)
-        if server_rsp:
-            rsp = server_rsp
     # power management
-    if msg == f'{summon}reboot' and "Super Admin" in roles:
+    elif msg == f'{summon}reboot' and "Super Admin" in roles:
         power.reboot()
         rsp = "server rebooting"
     elif msg == f'{summon}shutdown' and "Super Admin" in roles:
@@ -144,6 +139,12 @@ async def on_message(message):
         rsp = server_live
     else:
         rsp = "unknown command"
+    
+    # make msg hangler 
+    for server in server_list:
+        server_rsp = server.std_commands(msg, summon)
+        if server_rsp:
+            rsp = server_rsp
 
     await message.channel.send(rsp)
 

@@ -35,7 +35,7 @@ server_list = [
 # make help message
 server_instr = ''
 for server in server_list:
-    server_instr += server.help + '\n'
+    server_instr += server.help + '\n\n'
 
 help_msg = f'''to use me say `{summon.strip()}` 
 I will ignore you outside of {secrets.bot_channel} or if you have the Bot Banned role

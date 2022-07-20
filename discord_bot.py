@@ -1,5 +1,4 @@
 import discord
-import secrets
 from std_server import std_manager
 from power_manager import power_manager
 from discord.ext import commands, tasks
@@ -7,6 +6,7 @@ import time
 import schedule
 import threading
 import asyncio
+import json
 
 intents = discord.Intents.default()
 intents.presences = True
@@ -14,24 +14,26 @@ intents.members = True
 print(intents)
 print("bot started")
 
+f = open('config.json')
+config = json.load(f)
+f.close()
+settings = config['settings']
+server_configs = config['servers']
 
 def remove_prefix(text, prefix):
     return text[text.startswith(prefix) and len(prefix):]
 
 
 client = discord.Client(intents=intents)
-summon = "%cock "
-srv_num = 0  # todo implement this
-bot_channels = []
+summon = settings["summon_word"] + " "
+srv_num = settings["max_servers"] # todo implement this
+bot_channels = settings["bot_channels"] 
 
 power = power_manager()
 # make servers
-server_list = [
-    std_manager("minecraft", "mcv", secrets.vanilla_mc_path,secrets.vanilla_mc_ip, "stop"),
-    std_manager("terraria", "terv", secrets.vanilla_ter_path,secrets.vanilla_ter_ip, "exit"),
-    std_manager("rlcraft", "rlc", secrets.rlc_path,secrets.rlc_ip, "stop"),
-    std_manager("valheim", "valh", secrets.valhiem_path,secrets.valhiem_ip, "^C"),
-]
+server_list = []
+for s in server_configs:
+    server_list.append(std_manager(s['name'],s['screen_name'],s['cmd'],s['ip'],s['stop_word'],s['admin_role']))
 
 # make help message
 server_instr = ''
@@ -39,7 +41,7 @@ for server in server_list:
     server_instr += server.help + '\n\n'
 
 help_msg = f'''to use me say `{summon.strip()}` 
-I will ignore you outside of {secrets.bot_channel} or if you have the Bot Banned role
+I will ignore you outside of {bot_channels} or if you have the Bot Banned role
 Commands:
 {server_instr}`live` shows status of all servers
 `ip` shows ip list
@@ -93,7 +95,7 @@ async def on_ready():
     print("bot ready")
     for guild in client.guilds:
         for channel in guild.channels:
-            if channel.name in secrets.bot_channel:
+            if channel.name in bot_channels:
                 bot_channels.append(channel)
     print(bot_channels)
     scheduled_jobs()
@@ -104,7 +106,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.channel.name not in secrets.bot_channel:
+    if message.channel.name not in bot_channels:
         return
     if message.author == client.user:
         return
@@ -120,14 +122,14 @@ async def on_message(message):
     if summon.strip() == msg or f'{summon}help' == msg:
         rsp = help_msg
     # power management
-    elif msg == f'{summon}reboot' and "Super Admin" in roles:
+    elif msg == f'{summon}reboot' and settings["super_admin"] in roles:
         power.reboot()
         rsp = "server rebooting"
-    elif msg == f'{summon}shutdown' and "Super Admin" in roles:
+    elif msg == f'{summon}shutdown' and settings["super_admin"] in roles:
         power.quick_shutdown()
         rsp = "server shutting down"
     # Super Admin tools
-    elif msg == f'{summon}stop all' and "Super Admin" in roles:
+    elif msg == f'{summon}stop all' and settings["super_admin"] in roles:
         rsp = stop_all()
     # other stuff
     elif msg == f'{summon}ip':
@@ -159,4 +161,4 @@ async def on_member_update(prev, cur):
     #         judge_msg = f"{cur.mention} is playing League of Legends. Everyone be aware of this and judge them accordingly."
     #         send_message(bot_channels, judge_msg)
 
-client.run(secrets.private_token)
+client.run(settings['private_token'])

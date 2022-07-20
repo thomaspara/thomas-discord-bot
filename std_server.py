@@ -5,7 +5,7 @@ def remove_prefix(text, prefix):
 
 class std_manager:
 
-    def __init__(self,name,screen_name,cmd,ip,stop_word):
+    def __init__(self,name,screen_name,cmd,ip,stop_word,admin_role):
         self.server = server_manager(screen_name, cmd)
         self.name = name
         self.help = f'''`{name} start` starts {name} server
@@ -14,6 +14,7 @@ class std_manager:
 `{name} live` says if the server is live'''
         self.ip = f'`{ip}` {name}'
         self.stop_word = stop_word
+        self.admin_role = admin_role
 
     def std_commands(self, msg, summon, roles):
         rsp = ""
@@ -32,7 +33,7 @@ class std_manager:
                 rsp = "server is running"
             else:
                 rsp = "server is offline"
-        elif f'{summon}{self.name} send ' in msg and f"{self.name.capitalize()} Admin" in roles:
+        elif f'{summon}{self.name} send ' in msg and f"{self.admin_role}" in roles:
             cmd = remove_prefix(msg,f'{summon}{self.name} send ')
             if self.server.send(cmd):
                 rsp = f"sent `{cmd}`"

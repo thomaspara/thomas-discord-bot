@@ -27,7 +27,8 @@ def remove_prefix(text, prefix):
 client = discord.Client(intents=intents)
 summon = settings["summon_word"] + " "
 srv_num = settings["max_servers"] # todo implement this
-bot_channels = settings["bot_channels"] 
+bot_channel_names = settings["bot_channels"] 
+bot_channels=[]
 
 power = power_manager()
 # make servers
@@ -41,7 +42,7 @@ for server in server_list:
     server_instr += server.help + '\n\n'
 
 help_msg = f'''to use me say `{summon.strip()}` 
-I will ignore you outside of {bot_channels} or if you have the Bot Banned role
+I will ignore you outside of {bot_channel_names[0]} or if you have the Bot Banned role
 Commands:
 {server_instr}`live` shows status of all servers
 `ip` shows ip list
@@ -95,7 +96,7 @@ async def on_ready():
     print("bot ready")
     for guild in client.guilds:
         for channel in guild.channels:
-            if channel.name in bot_channels:
+            if channel.name in bot_channel_names:
                 bot_channels.append(channel)
     print(bot_channels)
     scheduled_jobs()
@@ -106,7 +107,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.channel.name not in bot_channels:
+    if message.channel.name not in bot_channel_names:
         return
     if message.author == client.user:
         return

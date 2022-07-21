@@ -15,12 +15,13 @@ class std_manager:
         self.ip = f'`{ip}` {name}'
         self.stop_word = stop_word
         self.admin_role = admin_role
+        self.role=None
 
     def std_commands(self, msg, summon, roles):
         rsp = ""
         if msg == f'{summon}{self.name} start':
             if self.server.start():
-                rsp = f"starting server, be sure to run `{summon}{self.name} stop` when you are done"
+                rsp = f"{self.role.mention} starting server, be sure to run `{summon}{self.name} stop` when you are done"
             else:
                 rsp = "server is running"
         elif msg == f'{summon}{self.name} stop':
@@ -54,3 +55,7 @@ class std_manager:
         else:
             rsp = f"{self.name} is offline"
         return rsp
+
+    def set_role(self, role):
+        self.role = role
+        print(role)

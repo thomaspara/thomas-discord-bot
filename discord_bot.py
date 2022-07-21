@@ -102,7 +102,26 @@ async def on_ready():
     scheduled_jobs()
     run_scheduled_tasks.start()
     send_message(bot_channels, "bot online")
-    judge_msg = ''
+
+    for guild in client.guilds:
+        server_names = [s.name for s in server_list]
+        print(server_names)
+        roles = [r.name for r in guild.roles]
+        for name in server_names:
+            if name not in roles:
+                await guild.create_role(name = name, mentionable = True)
+        
+        for server in server_list:
+            print(server.name)
+            for role in guild.roles:
+                if role.name == server.name:
+                    print(server.name)
+                    server.set_role(role)
+
+
+
+
+
 
 
 @client.event

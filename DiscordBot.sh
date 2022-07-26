@@ -1,3 +1,4 @@
+#!/bin/bash
 while [ -z "$(fping google.com | grep alive)" ]
 do
     echo "waiting for internet ..."
